@@ -28,6 +28,7 @@ class SymplaEvents(SymplaAPIRouter):
             handler = self.get(url=self.ROUTES["list_events"], params={
                 "page": page
             })
+
             handler.raise_for_status()
 
             response = handler.json()

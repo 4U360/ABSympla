@@ -6,7 +6,8 @@ from typing import Iterator
 
 class SymplaRequests(SymplaAPIRouter):
     ROUTES = {
-        "order_by_event": "/public/v3/events/{}/orders"
+        "order_by_event": "/public/v3/events/{}/orders",
+        "get_request": "/public/v3/events/{}/orders/{}"
     }
     logger = get_logger(__name__)
 
@@ -36,3 +37,10 @@ class SymplaRequests(SymplaAPIRouter):
             page += 1
 
         self.logger.info(f'event_requests has come to an end')
+
+    def get_request(self, event_id, request_id) -> Request:
+        self.logger.info(f'Reading event ({event_id}) requests ({request_id})')
+        handler = self.get(url=self.ROUTES["get_request"].format(event_id, request_id))
+        handler.raise_for_status()
+        response = handler.json()
+        return Request(**response.get("data"))
