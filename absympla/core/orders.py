@@ -1,6 +1,7 @@
 from .api_router import SymplaAPIRouter
 from ..log import get_logger
 from .types.order import Order
+from .types.participant import Participant
 from typing import Iterator
 
 
@@ -10,6 +11,7 @@ class SymplaOrders(SymplaAPIRouter):
         "get_order": "/public/v3/events/{}/orders/{}",
         "order_participants": "/public/v3/events/{}/orders/{}/participants"
     }
+
     logger = get_logger(__name__)
 
     def event_orders(self, event_id) -> Iterator[Order]:
@@ -68,8 +70,8 @@ class SymplaOrders(SymplaAPIRouter):
 
             self.logger.info(f"Has next: {'yes' if has_next else 'no'}")
 
-            for request_info in response.get("data"):
-                yield request_info
+            for participant in response.get("data"):
+                yield Participant(**participant)
 
             page += 1
 
