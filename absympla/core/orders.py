@@ -1,17 +1,17 @@
 from .api_router import SymplaAPIRouter
 from ..log import get_logger
-from .types.request import Request
+from .types.order import Order
 from typing import Iterator
 
 
-class SymplaRequests(SymplaAPIRouter):
+class SymplaOrders(SymplaAPIRouter):
     ROUTES = {
         "order_by_event": "/public/v3/events/{}/orders",
         "get_request": "/public/v3/events/{}/orders/{}"
     }
     logger = get_logger(__name__)
 
-    def event_requests(self, event_id) -> Iterator[Request]:
+    def event_orders(self, event_id) -> Iterator[Order]:
         self.logger.info(f'Reading event ({event_id}) requests')
         has_next = True
         page = 1
@@ -33,14 +33,17 @@ class SymplaRequests(SymplaAPIRouter):
             self.logger.info(f"Has next: {'yes' if has_next else 'no'}")
 
             for request_info in response.get("data"):
-                yield Request(**request_info)
+                yield Order(**request_info)
             page += 1
 
         self.logger.info(f'event_requests has come to an end')
 
-    def get_request(self, event_id, request_id) -> Request:
-        self.logger.info(f'Reading event ({event_id}) requests ({request_id})')
-        handler = self.get(url=self.ROUTES["get_request"].format(event_id, request_id))
+    def get_request(self, event_id, order_id) -> Order:
+        self.logger.info(f'Reading event ({event_id}) requests ({order_id})')
+        handler = self.get(url=self.ROUTES["get_request"].format(event_id, order_id))
         handler.raise_for_status()
         response = handler.json()
-        return Request(**response.get("data"))
+        return Order(**response.get("data"))
+
+    def order_participants(self):
+        pass

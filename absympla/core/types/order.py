@@ -3,7 +3,7 @@ from enum import Enum
 from decimal import Decimal
 
 
-class RequestStatus(Enum):
+class OrderStatus(Enum):
     PENDING = 'P'
     APPROVED = 'A'
     NOT_APPROVED = 'NA'
@@ -12,7 +12,7 @@ class RequestStatus(Enum):
     CANCELLED = 'C'
 
 
-class RequestTransactionType(Enum):
+class OrderTransactionType(Enum):
     CREDIT_CARD = "CREDIT_CARD"
     BOLETO_BANCARIO = 'BOLETO_BANCARIO'
     DEBITO_ONLINE = 'DEBITO_ONLINE'
@@ -23,7 +23,7 @@ class RequestTransactionType(Enum):
     PDV = 'PDV'
 
 
-class Request(object):
+class Order(object):
     __data = {}
 
     def __init__(self, **kwargs):
@@ -62,8 +62,8 @@ class Request(object):
         return self.data.get("transaction_type", "")
 
     @property
-    def transaction_type_object(self) -> RequestTransactionType:
-        return RequestTransactionType(self.transaction_type)
+    def transaction_type_object(self) -> OrderTransactionType:
+        return OrderTransactionType(self.transaction_type)
 
     @property
     def order_total_sale_price(self) -> float:
@@ -94,5 +94,5 @@ class Request(object):
         return self.data.get("order_status", "")
 
     @property
-    def order_status_object(self) -> RequestStatus:
-        return RequestStatus(self.order_status)
+    def order_status_object(self) -> OrderStatus:
+        return OrderStatus(self.order_status)

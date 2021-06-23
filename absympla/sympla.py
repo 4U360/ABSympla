@@ -1,7 +1,7 @@
 class ABSympla(object):
     from .core.session import SymplaSession
     from .core.events import SymplaEvents
-    from .core._requests import SymplaRequests
+    from .core.orders import SymplaRequests
 
     sympla_session = None
     __events = None
