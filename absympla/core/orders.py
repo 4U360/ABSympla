@@ -48,7 +48,7 @@ class SymplaOrders(SymplaAPIRouter):
         response = handler.json()
         return Order(**response.get("data"))
 
-    def order_participants(self, event_id, order_id):
+    def order_participants(self, event_id, order_id) -> Iterator[Participant]:
         self.logger.info(f'Reading event ({event_id}) order ({order_id}) participants')
         has_next = True
         page = 1
