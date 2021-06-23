@@ -1,6 +1,6 @@
 from absympla.log import get_logger
 from requests import Session
-from ..settings import API_KEY
+from absympla.settings import API_KEY
 
 
 class SymplaSession(object):

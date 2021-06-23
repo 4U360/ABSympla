@@ -1,6 +1,6 @@
-from .api_router import SymplaAPIRouter
-from ..log import get_logger
-from .types.participant import Participant
+from absympla.core.api_router import SymplaAPIRouter
+from absympla.log import get_logger
+from absympla.core.types.participant import Participant
 from typing import Iterator
 
 

@@ -1,9 +1,9 @@
 class ABSympla(object):
-    from .core.session import SymplaSession
-    from .core.events import SymplaEvents
-    from .core.orders import SymplaOrders
-    from .core.participants import SymplaParticipants
-    from .core.affiliates import SymplaAffiliates
+    from absympla.core.session import SymplaSession
+    from absympla.core.events import SymplaEvents
+    from absympla.core.orders import SymplaOrders
+    from absympla.core.participants import SymplaParticipants
+    from absympla.core.affiliates import SymplaAffiliates
 
     sympla_session = None
     __events = None

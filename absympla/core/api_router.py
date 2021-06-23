@@ -1,4 +1,4 @@
-from ..settings import API_HOST
+from absympla.settings import API_HOST
 from requests import Session
 
 
