@@ -6,10 +6,26 @@ from typing import Iterator
 
 class SymplaParticipants(SymplaAPIRouter):
     ROUTES = {
-        "event_participants": "/public/v3/events/{}/participants"
+        "event_participants": "/public/v3/events/{}/participants",
+        "participant_by_id": '/public/v3/events/{}/participants/{}',
+        "participant_by_ticket": '/public/v3/events/{}/participants/ticketNumber/{}',
     }
 
     logger = get_logger(__name__)
+
+    def participant_by_ticker(self, event_id, ticket_number) -> Participant:
+        self.logger.info(f'Reading ticket ({ticket_number}) info')
+        handler = self.get(url=self.ROUTES["participant_by_ticket"].format(event_id, ticket_number))
+        handler.raise_for_status()
+        response = handler.json()
+        return Participant(**response.get("data"))
+
+    def participant_by_id(self, event_id, participant_id) -> Participant:
+        self.logger.info(f'Reading participant ({participant_id}) info')
+        handler = self.get(url=self.ROUTES["participant_by_id"].format(event_id, participant_id))
+        handler.raise_for_status()
+        response = handler.json()
+        return Participant(**response.get("data"))
 
     def event_participants(self, event_id) -> Iterator[Participant]:
         self.logger.info(f'Reading event ({event_id}) participants')
