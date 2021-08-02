@@ -13,7 +13,7 @@ class SymplaParticipants(SymplaAPIRouter):
 
     logger = get_logger(__name__)
 
-    def participant_by_ticker(self, event_id, ticket_number) -> Participant:
+    def participant_by_ticker(self, event_id, ticket_number, **kwargs) -> Participant:
         self.logger.info(f'Reading ticket ({ticket_number}) info')
         handler = self.get(url=self.ROUTES["participant_by_ticket"].format(event_id, ticket_number))
         handler.raise_for_status()
@@ -27,16 +27,17 @@ class SymplaParticipants(SymplaAPIRouter):
         response = handler.json()
         return Participant(**response.get("data"))
 
-    def event_participants(self, event_id) -> Iterator[Participant]:
+    def event_participants(self, event_id, params: dict = {}) -> Iterator[Participant]:
         self.logger.info(f'Reading event ({event_id}) participants')
         has_next = True
-        page = 1
 
+        if "page" in params:
+            del params["page"]
+
+        params["page"] = 1
         while has_next:
 
-            handler = self.get(url=self.ROUTES["event_participants"].format(event_id), params={
-                "page": page
-            })
+            handler = self.get(url=self.ROUTES["event_participants"].format(event_id), params=params)
 
             handler.raise_for_status()
 
@@ -52,6 +53,6 @@ class SymplaParticipants(SymplaAPIRouter):
             for participant in response.get("data"):
                 yield Participant(**participant)
 
-            page += 1
+            params["page"] += 1
 
         self.logger.info(f'event_participants has come to an end')
